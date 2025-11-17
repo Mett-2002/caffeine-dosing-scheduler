@@ -29,47 +29,39 @@ Caffeine’s effects are largely predictable once you model its absorption and e
 
 ---
 
-## Key Features
+## Features & Example Run
 
-The script walks you through everything in a simple command-line interface:
+The scheduler provides a simple command-line workflow:
 
-* Choose your peak (`Cmax_target`) and trough (`Cmin_target`).
-* Pick your active window (`t_start` → `t_end`).
-* Specify your bedtime for plotting.
+- Enter your **peak** (`Cmax_target`) and **trough** (`Cmin_target`) caffeine levels  
+- Specify your **active window** (`t_start` → `t_end`)  
+- Set your **bedtime** for plotting  
 
 Behind the scenes, it handles:
 
-* First-dose sizing
-* Dose-timing optimization
-* Repeating-dose calculation
-* Final-dose correction
-* Full simulation of the caffeine curve using the PK model
+- First-dose sizing and timing  
+- Repeating-dose calculation to maintain the target range  
+- Final-dose correction to end at `Cmin_target`  
+- Full simulation of the caffeine curve using the PK model  
 
-You get **both a numerical regimen and a clean visual plot**.
+**Example Input:**
 
----
-
-## Example Run
-
-**Input:**
-
-1. Desired PEAK caffeine (MAX) level: 140 mg  
-2. Desired MINIMUM trough caffeine level: 100 mg  
-3. Start time for being within range: 8.0 h (08:00)  
-4. End time for the schedule: 19.0 h (19:00)  
-5. Sleep time (for plotting): 23.0 h (23:00)  
+1. Peak caffeine: 140 mg  
+2. Minimum caffeine: 100 mg  
+3. Start time: 8.0 h (08:00)  
+4. End time: 19.0 h (19:00)  
+5. Sleep time: 23.0 h (23:00)  
 
 **Output:**
 
-- Complete dose regimen with exact timings and amounts  
-- Full caffeine concentration plot over the day  
-- Bedtime caffeine level for evaluating sleep impact  
-
-> Tip: If caffeine at bedtime is too high, reduce `Cmin_target` or move `t_end` earlier.
+- Complete dose regimen with exact times and amounts  
+- Full caffeine concentration plot for the day  
+- Estimated caffeine at bedtime  
 
 ![Caffeine Dosing Schedule](output_example.png)
 
 ---
+
 ## The Caffeine Model
 
 The scheduler is built on a standard PK model with:
