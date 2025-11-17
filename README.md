@@ -1,160 +1,154 @@
+Here is a **cleaner**, **tighter**, non-redundant, fully rewritten README with smooth storytelling and no repeated sections.
+It opens with an engaging explanation of what the tool *actually* does for a real person.
+
+---
+
 # Caffeine Dosing Scheduler
 
-Imagine being able to dial in your ideal “focus zone” and stay there—no anxious spikes, no sluggish crashes. This tool builds a caffeine schedule tailored to you, using a pharmacokinetic model to keep your caffeine levels inside a target range during the hours you need to be sharp. If your productive window is **09:00 → 18:00**, the script designs a dosing pattern that stays within your chosen band the whole time.
+Imagine this: you sit down to work or study at **09:00**, you want to stay alert until **18:00**, and you want your caffeine level to remain in that magical zone where your brain feels sharp but not jittery. You pick a comfortable range—for example, **100 to 140 mg**—and the scheduler handles everything else.
+
+The script figures out:
+
+• When your **first intake** should happen (often around 30–60 minutes before your start time).
+• How large that dose should be so you arrive at your **minimum target level** right at your start time.
+• The **middle doses** spaced across the day to keep you inside your target zone.
+• And the **final dose**, calculated so by **18:00** you return exactly to your chosen minimum.
+
+If you widen your target band, the program automatically adapts—more room means different intervals and more middle doses to keep the curve accurate.
+This is why the tool asks for both a minimum and maximum target level: the model needs a band to maintain, not a single point.
 
 ---
 
-## What This Tool Does
+## What the Scheduler Does
 
-The scheduler uses a **one-compartment pharmacokinetic model**—a standard way to describe how caffeine moves through and leaves the body. You give it:
+It uses a standard pharmacokinetic model (the same math used in drug dosing) to simulate how caffeine is absorbed and eliminated. From this, it computes the full dosing schedule that keeps your curve between your chosen **Cmin** and **Cmax** during the entire active window.
 
-• A target peak caffeine level (the “high point” you want to reach).
-• A target trough (the lowest level you’re willing to dip to).
-• The hours during which you want your caffeine to stay in that zone.
-• Your sleep time so the plot can show how much caffeine is still in your system.
+The output includes:
 
-From that, the tool calculates:
+• Dose amounts
+• Exact dose times
+• A full simulation curve
+• Caffeine remaining at your sleep time
 
-• The exact **first dose** needed to hit your peak.
-• How much earlier than your start time you need to take it.
-• A **fixed repeating dose** and interval that maintain a smooth curve between peak and trough.
-• An adjusted final dose so you stay in-range right up to the end—without overshooting into your evening.
-
-No guesswork, no shaky overdose, no mid-afternoon crash.
+You get a scientifically grounded pacing strategy for your caffeine intake, not guesswork.
 
 ---
 
-## Why It’s Useful
+## Why Use It?
 
-Caffeine’s effects are largely predictable once you model its absorption and elimination. Working with that predictability gives you a few big wins:
+A stable caffeine curve avoids:
 
-• It helps prevent overstimulation and anxiety by avoiding uncontrolled peaks.
-• It protects your sleep by avoiding unwanted caffeine leftovers near bedtime.
-• It stabilizes your mental performance instead of pushing you into spike→crash cycles.
+• Big spikes that trigger anxiety
+• The late-afternoon crash
+• Hidden caffeine hanging around at bedtime
+• The guesswork of “should I drink more now?”
 
-In short: more focus, less chaos.
-
----
-
-## Key Features
-
-The script walks you through everything in a simple command-line interface:
-
-• Choose your peak (`Cmax_target`) and trough (`Cmin_target`).
-• Pick your active window (`t_start` → `t_end`).
-• Specify your bedtime for plotting.
-
-Behind the scenes, it handles:
-
-• First dose sizing
-• Dose timing shifts
-• Repeating-dose optimization
-• Final dose correction
-• Full simulation of the caffeine curve using the PK model
-
-You get both a numerical regimen and a clean visual plot.
+This is a small tool for people who want consistent, predictable focus throughout the day—without destroying their sleep.
 
 ---
 
+## Installation & Running
 
-## How to Interpret the Inputs
+Save the script as:
 
-`Cmax_target`
-Your ideal “high point” caffeine level.
+```
+caffeine_scheduler.py
+```
 
-`Cmin_target`
-The lowest level you're comfortable being at during your focus window.
+Install dependencies:
 
-`t_start`, `t_end`
-The time frame during which the model keeps you inside the band.
+```bash
+pip install numpy scipy matplotlib
+```
 
-`sleep_time`
-Used only for plotting, so you can visualize bedtime caffeine.
+Run:
 
-Note: Times are decimal hours. For example, 8.5 = 8:30.
+```bash
+python caffeine_scheduler.py
+```
+
+The program will ask for:
+
+• Peak caffeine level (`Cmax_target`)
+• Minimum level (`Cmin_target`)
+• Start time (`t_start`)
+• End time (`t_end`)
+• Sleep time (for plotting)
+
+Times are decimal hours (e.g., **8.5** means **08:30**).
 
 ---
 
-## The Caffeine Model
+## How It Works (Short Version)
 
-The scheduler is built on a standard PK model with:
+Caffeine enters and leaves the body following predictable curves.
+The model uses:
 
-• Absorption half-life: 0.5 h
-• Elimination half-life: 5 h
+• **Absorption half-life:** 0.5 h
+• **Elimination half-life:** 5.0 h
 
-From those, it computes:
+From these, it calculates:
+
+• How big the first dose must be to hit your target peak
+• How early you must take it to reach your trough at `t_start`
+• The interval and amount of all middle doses
+• A corrected last dose that returns you to your trough at `t_end`
+
+It then simulates and plots your exact concentration across the day.
+
+---
+
+## Core Formula (Reference)
+
+The concentration after one dose:
+
+```
+C_D(t) = D * (k_a/(k_a - k)) * (exp(-k*t) - exp(-k_a*t))
+```
+
+Where:
 
 ```
 k_a = ln(2)/0.5
 k   = ln(2)/5.0
 ```
 
-A single dose produces a concentration curve:
-
-```
-C_D(t) = D * (k_a/(k_a - k)) * (exp(-k*t) - exp(-k_a*t))
-```
-
-Peak occurs at:
+Peak time:
 
 ```
 T_max = ln(k_a/k) / (k_a - k)
 ```
 
-The peak multiplier is:
+First dose:
 
 ```
-pm = (k_a/(k_a - k)) * (exp(-k*T_max) - exp(-k_a*T_max))
+D_first = Cmax_target / peak_multiplier
 ```
 
-So the first dose is simply:
-
-```
-D_first = Cmax_target / pm
-```
-
-Subsequent doses are solved numerically to keep the trough near `Cmin_target`.
+Subsequent doses are computed numerically to match `Cmin_target`.
 
 ---
 
-## How the Algorithm Works
-
-Here’s the story behind the calculations:
-
-• It first computes how big your initial dose must be to hit your target peak.
-• Then it rewinds that dose backward in time so you start your window already inside the desired range.
-• A repeating interval and a fixed dose are found that hold the trough steady.
-• The final dose is tweaked so you hit your target trough exactly at `t_end`.
-• The full curve is simulated, and the plot shows concentration, target band, dose times, and how much caffeine is left at bedtime.
-
----
-
-## Understanding the Output
-
-The script prints:
-
-• Your first dose
-• The repeating dose
-• Dose times
-• Intervals
-• Peak/trough diagnostics
-
-The plot shows everything visually:
-your caffeine curve, your target range, your dose events, and bedtime’s residual level.
-
----
-
-## Example Run
+## Example Scenario
 
 Input:
 
-• Peak: `80 mg`
-• Trough: `30 mg`
-• Focus window: `9 → 18`
-• Bedtime: `23`
+```
+Cmax_target = 140
+Cmin_target = 100
+t_start = 9.0
+t_end = 18.0
+sleep_time = 23.0
+```
 
-Output: a complete dose regimen and a plot.
-If bedtime caffeine looks too high, lower the trough or move `t_end` earlier.
+The scheduler might tell you:
+
+• Take your **first dose around 08:30**
+• Several equal middle doses spaced across the day
+• A final dose bringing you back to 100 mg at **18:00**
+• Caffeine at sleep time (for evaluating sleep impact)
+
+And it produces a graph that visualizes the entire curve.
 
 ---
 
@@ -163,4 +157,5 @@ If bedtime caffeine looks too high, lower the trough or move `t_end` earlier.
 ![Caffeine Dosing Schedule](Figure_1.png)
 
 ---
+
 
