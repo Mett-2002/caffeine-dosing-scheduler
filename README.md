@@ -123,19 +123,24 @@ Subsequent doses are solved numerically to keep the trough above `Cmin_target`.
 
 **Input:**
 
-* Peak: `80 mg`
-* Trough: `30 mg`
-* Focus window: `9 → 18`
-* Bedtime: `23`
+1. Desired PEAK caffeine (MAX) level: 140 mg  
+2. Desired MINIMUM trough caffeine level: 100 mg  
+3. Start time for being within range: 8.0 h (08:00)  
+4. End time for the schedule: 19.0 h (19:00)  
+5. Sleep time (for plotting): 23.0 h (23:00)  
 
 **Output:**
-A complete dose regimen and a plot.
-If bedtime caffeine looks too high, lower the trough or move `t_end` earlier.
+
+- Complete dose regimen with exact timings and amounts  
+- Full caffeine concentration plot over the day  
+- Bedtime caffeine level for evaluating sleep impact  
+
+> Tip: If caffeine at bedtime is too high, reduce `Cmin_target` or move `t_end` earlier.
 
 ---
 
 ## Example Plot
 
-![Caffeine Dosing Schedule](Figure_1.png)
+![Caffeine Dosing Schedule](output_example.png)
 
 ---
