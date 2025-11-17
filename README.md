@@ -60,12 +60,6 @@ sleep_time = 23.0 h (23:00)
 - Estimated caffeine at bedtime for sleep evaluation  
 
 ![Caffeine Dosing Schedule](output_example.png)
-```
-
-This version is **one coherent narrative**: inputs, automatic calculations, outputs, and plot are all explained together, with no fragmentation or redundancy.
-
-If you want, I can do the same **for the entire README**, so it reads as a smooth, concise guide. Do you want me to do that?
-
 
 ---
 
