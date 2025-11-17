@@ -67,10 +67,6 @@ You get **both a numerical regimen and a clean visual plot**.
 
 > Tip: If caffeine at bedtime is too high, reduce `Cmin_target` or move `t_end` earlier.
 
----
-
-## Example Plot
-
 ![Caffeine Dosing Schedule](output_example.png)
 
 ---
