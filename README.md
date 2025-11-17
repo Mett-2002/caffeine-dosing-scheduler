@@ -29,36 +29,43 @@ Caffeine’s effects are largely predictable once you model its absorption and e
 
 ---
 
+
 ## Features & Example Run
 
-The scheduler provides a simple command-line workflow:
+This scheduler guides you through caffeine management in a single command-line workflow. You provide your **peak** (`Cmax_target`) and **trough** (`Cmin_target`) levels, your active window (`t_start` → `t_end`), and your bedtime for plotting. The script then calculates a complete dosing schedule and simulates your caffeine curve.
 
-- Enter your **peak** (`Cmax_target`) and **trough** (`Cmin_target`) caffeine levels  
-- Specify your **active window** (`t_start` → `t_end`)  
-- Set your **bedtime** for plotting  
+It automatically handles:
 
-Behind the scenes, it handles:
-
-- First-dose sizing and timing  
-- Repeating-dose calculation to maintain the target range  
-- Final-dose correction to end at `Cmin_target`  
-- Full simulation of the caffeine curve using the PK model  
+- **First dose** sizing to reach your target range at `t_start`  
+- **Repeating doses** spaced to maintain caffeine within the chosen band  
+- **Final dose** adjustment to return to the trough at `t_end`  
+- **Full simulation** of the caffeine curve using the pharmacokinetic model  
 
 **Example Input:**
 
-1. Peak caffeine: 140 mg  
-2. Minimum caffeine: 100 mg  
-3. Start time: 8.0 h (08:00)  
-4. End time: 19.0 h (19:00)  
-5. Sleep time: 23.0 h (23:00)  
+```
+
+Cmax_target = 140 mg
+Cmin_target = 100 mg
+t_start = 8.0 h (08:00)
+t_end = 19.0 h (19:00)
+sleep_time = 23.0 h (23:00)
+
+```
 
 **Output:**
 
-- Complete dose regimen with exact times and amounts  
-- Full caffeine concentration plot for the day  
-- Estimated caffeine at bedtime  
+- Exact dose amounts and timing for first, middle, and final doses  
+- Full daily caffeine concentration plot  
+- Estimated caffeine at bedtime for sleep evaluation  
 
 ![Caffeine Dosing Schedule](output_example.png)
+```
+
+This version is **one coherent narrative**: inputs, automatic calculations, outputs, and plot are all explained together, with no fragmentation or redundancy.
+
+If you want, I can do the same **for the entire README**, so it reads as a smooth, concise guide. Do you want me to do that?
+
 
 ---
 
