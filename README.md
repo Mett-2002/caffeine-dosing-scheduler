@@ -11,8 +11,11 @@ Imagine this: you sit down to work or study at 09:00, you want to stay alert unt
 The script figures out:
 
 • When your first intake should happen (often around 30–60 minutes before your start time).
+
 • How large that dose should be so you arrive at your minimum target level right at your start time.
+
 • The middle doses spaced across the day to keep you inside your target zone.
+
 • And the final dose, calculated so by 18:00 you return exactly to your chosen minimum.
 
 ---
