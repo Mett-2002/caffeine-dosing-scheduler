@@ -15,8 +15,6 @@ The script figures out:
 • The middle doses spaced across the day to keep you inside your target zone.
 • And the final dose, calculated so by 18:00 you return exactly to your chosen minimum.
 
-If you widen your target band, the program automatically adapts—more room means different intervals and more middle doses to keep the curve accurate.
-This is why the tool asks for both a minimum and maximum target level: the model needs a band to maintain, not a single point.
 ---
 
 ## Why It’s Useful
