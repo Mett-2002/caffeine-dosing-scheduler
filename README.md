@@ -49,23 +49,6 @@ You get **both a numerical regimen and a clean visual plot**.
 
 ---
 
-## How to Interpret the Inputs
-
-**`Cmax_target`**
-Your ideal “high point” caffeine level.
-
-**`Cmin_target`**
-The lowest level you're comfortable being at during your focus window.
-
-**`t_start`, `t_end`**
-The time frame during which the model keeps you inside the band.
-
-**`sleep_time`**
-Used only for plotting, so you can visualize bedtime caffeine.
-
-> **Note:** Times are decimal hours. Example: `8.5 = 8:30`.
-
----
 ## Example Run
 
 **Input:**
