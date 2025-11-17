@@ -66,7 +66,31 @@ Used only for plotting, so you can visualize bedtime caffeine.
 > **Note:** Times are decimal hours. Example: `8.5 = 8:30`.
 
 ---
+## Example Run
 
+**Input:**
+
+1. Desired PEAK caffeine (MAX) level: 140 mg  
+2. Desired MINIMUM trough caffeine level: 100 mg  
+3. Start time for being within range: 8.0 h (08:00)  
+4. End time for the schedule: 19.0 h (19:00)  
+5. Sleep time (for plotting): 23.0 h (23:00)  
+
+**Output:**
+
+- Complete dose regimen with exact timings and amounts  
+- Full caffeine concentration plot over the day  
+- Bedtime caffeine level for evaluating sleep impact  
+
+> Tip: If caffeine at bedtime is too high, reduce `Cmin_target` or move `t_end` earlier.
+
+---
+
+## Example Plot
+
+![Caffeine Dosing Schedule](output_example.png)
+
+---
 ## The Caffeine Model
 
 The scheduler is built on a standard PK model with:
@@ -119,28 +143,4 @@ Subsequent doses are solved numerically to keep the trough above `Cmin_target`.
 
 ---
 
-## Example Run
 
-**Input:**
-
-1. Desired PEAK caffeine (MAX) level: 140 mg  
-2. Desired MINIMUM trough caffeine level: 100 mg  
-3. Start time for being within range: 8.0 h (08:00)  
-4. End time for the schedule: 19.0 h (19:00)  
-5. Sleep time (for plotting): 23.0 h (23:00)  
-
-**Output:**
-
-- Complete dose regimen with exact timings and amounts  
-- Full caffeine concentration plot over the day  
-- Bedtime caffeine level for evaluating sleep impact  
-
-> Tip: If caffeine at bedtime is too high, reduce `Cmin_target` or move `t_end` earlier.
-
----
-
-## Example Plot
-
-![Caffeine Dosing Schedule](output_example.png)
-
----
