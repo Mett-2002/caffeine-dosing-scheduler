@@ -1,138 +1,129 @@
 # Caffeine Dosing Scheduler
 
-A tool to plan your caffeine intake throughout the day to stay alert without jitters or crashes. It calculates exact doses and timings to maintain your caffeine levels in a comfortable target range.
+Imagine sitting down to work or study at **09:00** and wanting to stay alert until **18:00**, keeping your caffeine level in the sweet spot where your brain feels sharp but not jittery. You choose a comfortable range—for example, **100–140 mg**—and the scheduler calculates the optimal caffeine doses and timings for you.
+
+It determines:
+
+- When your **first dose** should occur (typically 30–60 minutes before start)  
+- How large that dose must be to reach your **minimum target** at the start of your work window  
+- **Middle doses** spaced throughout the day to maintain the target range  
+- A **final dose** to return caffeine levels to the minimum at **t_end**  
+
+Widening the target band automatically adjusts intervals and dose sizes. Both a minimum and maximum are required because the model maintains a range rather than a single value.
+
+The scheduler uses a standard pharmacokinetic model to simulate caffeine absorption and elimination, producing:
+
+- Exact **dose amounts** and **timings**  
+- A **full concentration curve**  
+- Estimated caffeine remaining at **sleep time**  
+
+This ensures a stable caffeine curve, avoiding spikes, crashes, lingering caffeine at bedtime, and guesswork.
 
 ---
 
-## Overview
+## Installation & Running
 
-The scheduler helps you stay focused between a start and end time, e.g., 09:00–18:00, by maintaining your caffeine concentration between a minimum (`Cmin`) and maximum (`Cmax`) target.  
+Save the script as:
 
-It automatically calculates:
-
-- **First dose** timing and size to reach your minimum target by start time.
-- **Middle doses** to stay within the target range.
-- **Final dose** to return to the minimum level by the end of your work/study period.
-
-Widening your target range adapts the schedule automatically with more flexible intervals and doses.
-
----
-
-## How It Works
-
-The program uses a standard pharmacokinetic model:
-
-- **Absorption half-life:** 0.5 hours  
-- **Elimination half-life:** 5.0 hours  
-
-From this, it calculates:
-
-- First dose amount and timing
-- All middle dose amounts and intervals
-- Final dose to hit the minimum target at the end time
-
-### Core Formula
-
-Caffeine concentration after one dose:
-
-```
-
-C_D(t) = D * (k_a / (k_a - k)) * (exp(-k * t) - exp(-k_a * t))
-
-```
-
-Where:
-
-```
-
-k_a = ln(2)/0.5
-k   = ln(2)/5.0
-
-```
-
-Peak time:
-
-```
-
-T_max = ln(k_a/k) / (k_a - k)
-
+```bash
+caffeine_scheduler.py
 ````
 
----
-
-## Features
-
-- Calculates exact dose amounts and times
-- Provides a full simulation curve of caffeine concentration
-- Estimates caffeine remaining at sleep time
-- Avoids spikes, crashes, and lingering caffeine at bedtime
-
----
-
-## Installation
-
-1. Save the script as `caffeine_scheduler.py`
-2. Install dependencies:
+Install dependencies:
 
 ```bash
 pip install numpy scipy matplotlib
-````
+```
 
-3. Run:
+Run:
 
 ```bash
 python caffeine_scheduler.py
 ```
 
+The program will prompt for:
+
+* **Cmax_target** – peak caffeine level
+* **Cmin_target** – minimum caffeine level
+* **t_start** – start time
+* **t_end** – end time
+* **sleep_time** – for plotting
+
+> Times are decimal hours (e.g., 8.5 = 08:30).
+
 ---
 
-## Input Parameters
+## How It Works
 
-The program will ask for:
+Caffeine enters and leaves the body following predictable pharmacokinetics:
 
-* **Cmax_target:** Maximum desired caffeine level (mg)
-* **Cmin_target:** Minimum desired caffeine level (mg)
-* **t_start:** Start time in decimal hours (e.g., 8.5 = 08:30)
-* **t_end:** End time in decimal hours
-* **sleep_time:** Sleep time for plotting purposes
+* **Absorption half-life (t₁/₂,a):** 0.5 h
+* **Elimination half-life (t₁/₂,e):** 5.0 h
+
+Caffeine concentration after a single dose is:
+
+```
+C_D(t) = D * (k_a / (k_a - k)) * (exp(-k*t) - exp(-k_a*t))
+```
+
+Where:
+
+* `k_a = ln(2)/t₁/₂,a` is the absorption rate constant
+* `k   = ln(2)/t₁/₂,e` is the elimination rate constant
+* `D` is the dose in mg
+* `t` is time since ingestion in hours
+
+Peak time for a single dose:
+
+```
+T_max = ln(k_a / k) / (k_a - k)
+```
+
+### Dose Scheduling Logic
+
+1. **First dose:**
+   Calculated to reach your target caffeine range at `t_start`. Both dose size and timing are determined to ensure caffeine rises smoothly from zero to the minimum target level at the start of your active period:
+
+   ```
+   D_first = Cmax_target / peak_multiplier
+   ```
+
+2. **Middle doses:**
+   Using numerical simulation, the scheduler inserts doses whenever projected caffeine would fall below `Cmin_target` before `t_end`. Dose size and timing are adjusted to keep levels within the target band.
+
+3. **Final dose:**
+   Computed to return caffeine to `Cmin_target` exactly at `t_end`, avoiding residual caffeine that could affect sleep.
+
+4. **Simulation:**
+   After calculating all doses, the script simulates and plots the full concentration curve, showing caffeine throughout the day and estimated levels at sleep time.
+
+This method maintains a smooth, predictable caffeine curve, balancing alertness and minimal sleep disruption.
 
 ---
 
 ## Example Scenario
 
-Input:
-
-* `Cmax_target = 140`
-* `Cmin_target = 100`
-* `t_start = 9.0`
-* `t_end = 18.0`
-* `sleep_time = 23.0`
-
-Output:
-
-* First dose around 08:30
-* Several equal middle doses across the day
-* Final dose to return to 100 mg at 18:00
-* Simulation curve showing caffeine levels throughout the day
-
----
-
-## Why Use It
-
-Maintaining a stable caffeine curve helps avoid:
-
-* Anxiety from spikes
-* Late-afternoon crashes
-* Hidden caffeine at bedtime
-* Random guesswork about when to drink next
-
-This scheduler provides a precise, science-based way to manage focus and alertness.
-
----
-
-## Visualization
-
-The program plots the caffeine concentration curve over the day, including projected levels at sleep time, so you can see the full impact of your dosing schedule.
+**Input:**
 
 ```
+Cmax_target = 140
+Cmin_target = 100
+t_start = 9.0
+t_end = 18.0
+sleep_time = 23.0
+```
 
+**Scheduler output:**
+
+* First dose around **08:30**
+* Several equal middle doses spaced through the day
+* Final dose returning to 100 mg at **18:00**
+* Graph visualizing caffeine levels and remaining caffeine at sleep time
+
+---
+
+## Example Plot
+
+![Caffeine Dosing Schedule](Figure_1.png)
+
+```
