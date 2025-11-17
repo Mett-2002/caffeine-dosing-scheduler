@@ -1,8 +1,3 @@
-Here is a **cleaner**, **tighter**, non-redundant, fully rewritten README with smooth storytelling and no repeated sections.
-It opens with an engaging explanation of what the tool *actually* does for a real person.
-
----
-
 # Caffeine Dosing Scheduler
 
 Imagine this: you sit down to work or study at **09:00**, you want to stay alert until **18:00**, and you want your caffeine level to remain in that magical zone where your brain feels sharp but not jittery. You pick a comfortable range—for example, **100 to 140 mg**—and the scheduler handles everything else.
