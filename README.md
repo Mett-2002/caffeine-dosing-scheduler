@@ -107,7 +107,7 @@ So the **first dose** is:
 D_first = Cmax_target / pm
 ```
 
-Subsequent doses are solved numerically to maintain the **trough above `Cmin_target`**.
+Subsequent doses are solved numerically to maintain **above the`Cmin_target`**.
 
 ---
 
